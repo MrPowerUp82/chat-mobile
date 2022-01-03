@@ -42,7 +42,7 @@ export const Input = styled.TextInput`
     padding: 8px 15px;
     font-size: 18px;
     color: #fff;
-    border: 2px solid black;
+    border: 1px solid #ddd;
 `
 export const SendButton = styled.TouchableOpacity`
     width: 15%;

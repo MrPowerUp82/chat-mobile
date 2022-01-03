@@ -21,7 +21,7 @@ export default function Chat(){
             </Header>
             <ChatMessage data={data} renderItem={({item})=><RenderMsg/>} />
             <InputContainer>
-            <Input />
+            <Input placeholder="Mensagem" placeholderTextColor="#fff"/>
             <SendButton>
                 <Feather name="send" size={28} color="#0066ff"/>
             </SendButton>
