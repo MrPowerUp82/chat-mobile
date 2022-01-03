@@ -24,9 +24,11 @@ export const NameChat = styled.Text`
     margin-left: 25%;
 `
 
-export const ChatMessage = styled.View`
+export const ChatMessage = styled.FlatList`
 background-color:#fff;
 height: 83%;
+flex-direction:column;
+padding: 4px 0;
 `
 export const InputContainer = styled.View`
 height: 9%;
@@ -40,6 +42,7 @@ export const Input = styled.TextInput`
     padding: 8px 15px;
     font-size: 18px;
     color: #fff;
+    border: 2px solid black;
 `
 export const SendButton = styled.TouchableOpacity`
     width: 15%;
