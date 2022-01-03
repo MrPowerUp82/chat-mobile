@@ -9,7 +9,7 @@ export default function Chat(){
 
     const navigation = useNavigation()
 
-    const data = [1]
+    const data = [1,2]
 
     return(
         <Container>

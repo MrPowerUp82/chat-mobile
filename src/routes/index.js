@@ -4,6 +4,8 @@ import StackRoutes from './stackRoutes'
 import {Feather} from '@expo/vector-icons'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
+import Send from '../pages/Send'
+import Home from '../pages/Home'
 
 const Drawer = createDrawerNavigator()
 
@@ -18,6 +20,10 @@ export default function Routes(){
             }}/>
             <Drawer.Screen name="Login" component={Login}></Drawer.Screen>
             <Drawer.Screen name="Register" component={Register}></Drawer.Screen>
+            <Drawer.Screen name="Send" component={Send} options={{
+                title:'Solicitações',
+                drawerIcon: ({focused,size,color})=>(<Feather name="inbox" size={size} color={color} />)
+            }} />
         </Drawer.Navigator>
     )
 }
