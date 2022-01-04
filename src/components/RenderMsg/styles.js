@@ -18,3 +18,8 @@ export const MsgBoxLeft = styled.View`
     border-radius:20px;
     margin-bottom:5px;
 `
+
+export const Text = styled.Text`
+    color:${props=>(props?.color ? props.color : 'black')};
+    font-size:${props=>(props?.size ? props.size : '12')}px;
+`
