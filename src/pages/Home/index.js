@@ -17,7 +17,6 @@ export default function Home(){
         }).then(r=>r.json()).then(json=>{
             setFriends(json)
         })
-        console.log(user_id,username)
     },[])
 
     const navigation = useNavigation()

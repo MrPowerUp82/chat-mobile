@@ -1,8 +1,11 @@
 import React, {useState, useCallback} from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Container, InputContainer,Title,Input, Button, ButtonTitle} from './styles';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Login(){
+
+    const navigation = useNavigation()
 
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
@@ -15,12 +18,14 @@ export default function Login(){
         await fetch('https://webcoffee.herokuapp.com/api/v1/user/',{
 			headers: {'Authorization': `Bearer ${token}`}
 		}).then(r=>r.json()).then(json=>{
-            console.log()
+            console.log(json[0])
             setUser(json[0].username)
             setUserID(json[0].id)
         })
         await AsyncStorage.setItem('username',user)
         await AsyncStorage.setItem('userid',userID.toString())
+        navigation.navigate('Home')
+
     }
 
     async function handleLogin(){

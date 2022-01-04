@@ -19,7 +19,6 @@ export default function Chat(){
 
     const navigation = useNavigation()
 
-    const data = [1,2]
 
     useEffect(async()=>{
         const user_id = await AsyncStorage.getItem('userid')
