@@ -11,6 +11,9 @@ export default function Chat(){
     const [msgs,setMsgs] = useState([])
     const [sendusername,setUsername]=useState('')
     const [userid,setUserid] =useState('')
+    const [senduserid,setSenduserid] = useState('')
+    const [sendmsg, setSendMsg] =useState('')
+    const [token,setToken] =useState('')
 
     const route = useRoute()
 
@@ -23,7 +26,9 @@ export default function Chat(){
         setUserid(user_id)
         const username = await AsyncStorage.getItem('username')
         const token = await AsyncStorage.getItem('token')
+        setToken(token)
         const send_user_id = route?.params?.data[0].id
+        setSenduserid(send_user_id)
         const send_username = route?.params?.data[0].username
         setUsername(send_username)
         await fetch(`https://webcoffee.herokuapp.com/api/v1/msgs/${user_id}/${send_user_id}/`,{
@@ -32,6 +37,19 @@ export default function Chat(){
             setMsgs(json)
         })
     },[])
+
+    async function sendMsg(){
+        await fetch('https://webcoffee.herokuapp.com/api/v1/msgs/',{
+			method: 'POST',
+			headers:{
+				'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+			},
+			body: JSON.stringify({send_user_msg_id:userid, recv_user_msg_id: senduserid, msg: sendmsg})
+		}).then(r=>r.json()).then(json=>{
+            setMsgs([...msgs,json])
+        })
+    }
 
     return(
         <Container>
@@ -43,8 +61,8 @@ export default function Chat(){
             </Header>
             <ChatMessage data={msgs} renderItem={({item})=><RenderMsg data={item} user_id={userid} />} keyExtractor={(item)=>item.id} />
             <InputContainer>
-            <Input placeholder="Mensagem" placeholderTextColor="#fff"/>
-            <SendButton>
+            <Input placeholder="Mensagem" placeholderTextColor="#fff" value={sendmsg} onChangeText={(text)=>setSendMsg(text)}/>
+            <SendButton onPress={()=>sendMsg()}>
                 <Feather name="send" size={28} color="#0066ff"/>
             </SendButton>
             </InputContainer>
