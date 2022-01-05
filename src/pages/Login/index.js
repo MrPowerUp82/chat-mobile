@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Container, InputContainer,Title,Input, Button, ButtonTitle} from './styles';
+import { NativeModules } from 'react-native';
+import * as Updates from 'expo-updates'
+
 
 export default function Login(){
 
@@ -22,6 +25,8 @@ export default function Login(){
         })
         await AsyncStorage.setItem('username',user)
         await AsyncStorage.setItem('userid',userID.toString())
+        NativeModules.DevSettings.reload()
+        await Updates.reloadAsync()
         }
     },[token])
 

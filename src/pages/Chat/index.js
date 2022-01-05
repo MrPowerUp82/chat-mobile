@@ -58,7 +58,7 @@ export default function Chat(){
                 </HeaderButton>
                 <NameChat>{sendusername}</NameChat>
             </Header>
-            <ChatMessage data={msgs} renderItem={({item})=><RenderMsg data={item} user_id={userid} />} keyExtractor={(item)=>item.id} />
+            <ChatMessage data={msgs} renderItem={({item})=><RenderMsg data={item} user_id={userid} />} keyExtractor={(item)=>item.id.toString()} />
             <InputContainer>
             <Input placeholder="Mensagem" placeholderTextColor="#fff" value={sendmsg} onChangeText={(text)=>setSendMsg(text)}/>
             <SendButton onPress={()=>sendMsg()}>
