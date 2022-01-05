@@ -19,9 +19,14 @@ export default function Register(){
 			body: JSON.stringify({username:username, email:email, password: password, nome_chat: ''})
 		}).then(res=>res.json()).then(json=>{
             console.log(json)
-            navigation.navigate('Login')
+            alert("Certo. Agora vá até a página de Login...")
         })
     }
+
+    function navigateToLoginPage(){
+        navigation.navigate('Login')
+    }
+
 
     return(
         <Container>

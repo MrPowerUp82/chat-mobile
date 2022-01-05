@@ -9,3 +9,7 @@ export const  Container = styled.SafeAreaView`
 export const SliderFriends = styled.FlatList`
     padding: 0 14px;
 `
+
+export const Text = styled.Text`
+    font-size:24px;
+`

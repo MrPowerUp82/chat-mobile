@@ -3,7 +3,6 @@ import {Container, Name} from './styles.js'
 import {Feather} from '@expo/vector-icons'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Updates from 'expo-updates'
-import { NativeModules } from 'react-native';
 
 export default function RenderInvites({data}){
 

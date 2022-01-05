@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react';
-import {Container, ListInvites, HeaderButton, Header} from './styles'
+import {Container, ListInvites, HeaderButton, Header, TextInfo} from './styles'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RenderInvites from '../../components/RenderInvites'
 import {Feather} from '@expo/vector-icons'
@@ -33,13 +33,16 @@ export default function Send(){
     },[])
 
     return(
-        <Container>
-            <Header>
+        <>
+        <Header>
                 <HeaderButton onPress={()=>navigateToSearchPage()}>
                     <Feather name="search" size={28} color="#fff"/>
                 </HeaderButton>
             </Header>
-            <ListInvites data={invites} renderItem={({item})=><RenderInvites data={item}/>} keyExtractor={(item)=>item.id} />
+        <Container>
+            
+            {invites.length === 0 ? <TextInfo>Não Há Solicitações</TextInfo> : <ListInvites data={invites} renderItem={({item})=><RenderInvites data={item}/>} keyExtractor={(item)=>item.id} />}
         </Container>
+        </>
     )
 }

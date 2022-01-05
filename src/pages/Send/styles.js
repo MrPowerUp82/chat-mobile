@@ -8,7 +8,6 @@ export const Header = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    margin-bottom:5px;
 `
 export const HeaderButton = styled.TouchableOpacity`
     padding: 0 14px;
@@ -24,4 +23,9 @@ export const Container = styled.SafeAreaView`
 
 export const ListInvites = styled.FlatList`
     flex-direction: column;
+    background-color:#fff;
+`
+
+export const TextInfo = styled.Text`
+    font-size: 24px;
 `

@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {Container,Header,HeaderButton,NameChat,ChatMessage, InputContainer, Input, SendButton} from './styles.js'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Feather} from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import RenderMsg from '../../components/RenderMsg/index.js';
+
 
 
 export default function Chat(){
@@ -15,6 +16,7 @@ export default function Chat(){
     const [sendmsg, setSendMsg] =useState('')
     const [token,setToken] =useState('')
     const [times, setTimes] = useState('')
+    const msgRef = useRef(null)
 
 
     const route = useRoute()
@@ -56,8 +58,7 @@ export default function Chat(){
     },[times])
 
     async function sendMsg(){
-        console.log(sendMsg)
-        if(typeof(sendMsg) !== typeof('')){
+        if(sendmsg === ''){
             alert('Você não digitou nada')
         }else{
             await fetch('https://webcoffee.herokuapp.com/api/v1/msgs/',{
@@ -68,7 +69,11 @@ export default function Chat(){
 			},
 			body: JSON.stringify({send_user_msg_id:userid, recv_user_msg_id: senduserid, msg: sendmsg})
 		}).then(r=>r.json()).then(json=>{
-            setMsgs([...msgs,json])
+            if (msgs.error === undefined){
+                setMsgs([...msgs,json])
+            }else{
+                setMsgs([json])
+            }
             setSendMsg('')
         })
         }
@@ -82,7 +87,7 @@ export default function Chat(){
                 </HeaderButton>
                 <NameChat>{sendusername}</NameChat>
             </Header>
-            <ChatMessage data={msgs} renderItem={({item})=><RenderMsg data={item} user_id={userid} />} keyExtractor={(item)=>item.id.toString()} />
+            <ChatMessage data={msgs} renderItem={({item})=><RenderMsg data={item} user_id={userid} />} keyExtractor={(item)=>item.id.toString()} ref={msgRef} onContentSizeChange={() => msgRef.current.scrollToEnd() } onLayout={() => msgRef.current.scrollToEnd() } />
             <InputContainer>
             <Input placeholder="Mensagem" placeholderTextColor="#fff" value={sendmsg} onChangeText={(text)=>setSendMsg(text)}/>
             <SendButton onPress={()=>sendMsg()}>

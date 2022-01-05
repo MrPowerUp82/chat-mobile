@@ -25,14 +25,15 @@ export const NameChat = styled.Text`
 `
 
 export const ChatMessage = styled.FlatList`
-background-color:#fff;
-height: 83%;
+background-color: #fff;
+height: 84%;
 flex-direction:column;
 padding: 4px 0;
 `
 export const InputContainer = styled.View`
-height: 9%;
+height: 8%;
 flex-direction: row;
+background-color: transparent;
 `
 export const Input = styled.TextInput`
     background-color: rgba(37,99,235, 0.8);
