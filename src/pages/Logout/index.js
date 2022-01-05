@@ -1,22 +1,22 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from '@react-navigation/native';
 import { Container, Button, ButtonText,Text } from './styles';
+import { NativeModules } from 'react-native';
 
 export default function Logout(){
+    
 
-    const navigation = useNavigation()
-
-    useEffect(async()=>{
+    async function sair(){
         await AsyncStorage.removeItem('userid')
         await AsyncStorage.removeItem('username')
         await AsyncStorage.removeItem('token')
-    },[])
+        NativeModules.DevSettings.reload()
+    }
 
     return(
         <Container>
             <Text>Certeza?</Text>
-            <Button onPress={()=> navigation.navigate('Login')}>
+            <Button onPress={()=> sair()}>
                 <ButtonText>Sim</ButtonText>
             </Button>
         </Container>

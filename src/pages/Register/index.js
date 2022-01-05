@@ -5,7 +5,7 @@ export default function Register(){
     return(
         <Container>
             <InputContainer>
-                <Title>Register Page</Title>
+                <Title>Register</Title>
                 <Input placeholder="E-mail"/>
                 <Input placeholder="Username"/>
                 <Input placeholder="Password"/>

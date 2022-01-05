@@ -1,11 +1,9 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Container, InputContainer,Title,Input, Button, ButtonTitle} from './styles';
-import { useNavigation } from '@react-navigation/native';
 
 export default function Login(){
 
-    const navigation = useNavigation()
 
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
@@ -13,9 +11,9 @@ export default function Login(){
     const [user,setUser] = useState('')
     const [userID,setUserID] = useState('')
 
-
-    async function getUser(){
-        await fetch('https://webcoffee.herokuapp.com/api/v1/user/',{
+    useEffect(async()=>{
+        if (token !== ''){
+            await fetch('https://webcoffee.herokuapp.com/api/v1/user/',{
 			headers: {'Authorization': `Bearer ${token}`}
 		}).then(r=>r.json()).then(json=>{
             console.log(json[0])
@@ -24,9 +22,9 @@ export default function Login(){
         })
         await AsyncStorage.setItem('username',user)
         await AsyncStorage.setItem('userid',userID.toString())
-        navigation.navigate('Home')
+        }
+    },[token])
 
-    }
 
     async function handleLogin(){
         await fetch('https://webcoffee.herokuapp.com/token/',{
@@ -39,14 +37,16 @@ export default function Login(){
             setToken(json.access)
         })
         await AsyncStorage.setItem('token', token)
-        await getUser()
+        await AsyncStorage.setItem('username',user)
+        await AsyncStorage.setItem('userid',userID.toString())
+        
     }
 
 
     return(
         <Container>
             <InputContainer>
-                <Title>Login Page</Title>
+                <Title>Login</Title>
                 <Input placeholder="Username" value={username} onChangeText={(text)=>{setUsername(text)}}/>
                 <Input placeholder="Password" secureTextEntry={true} value={password} onChangeText={(text)=>{setPassword(text)}}/>
                 <Button onPress={()=>handleLogin()}>

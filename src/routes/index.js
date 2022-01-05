@@ -34,14 +34,19 @@ export default function Routes(){
                 title:'Solicitações',
                 drawerIcon: ({focused,size,color})=>(<Feather name="inbox" size={size} color={color} />)
             }} />
-                <Drawer.Screen name="Logout" component={Logout}/>
+                <Drawer.Screen name="Logout" component={Logout} options={{
+                    drawerIcon: ({focused,size,color})=>(<Feather name="log-out" size={size} color={color} />)
+                }}/>
                 </>
             ) : (
                 <>
                 <Drawer.Screen name="LoginDrawer" component={Login} options={{
-                    title: 'Login'
+                    title: 'Login',
+                    drawerIcon: ({focused,size,color})=>(<Feather name="log-in" size={size} color={color} />)
                 }}/>
-                <Drawer.Screen name="Register" component={Register}/>
+                <Drawer.Screen name="Register" component={Register} options={{
+                    drawerIcon: ({focused,size,color})=>(<Feather name="user" size={size} color={color} />)
+                }}/>
                 </>
             )}
         </Drawer.Navigator>
