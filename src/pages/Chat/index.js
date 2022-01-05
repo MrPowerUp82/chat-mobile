@@ -14,6 +14,8 @@ export default function Chat(){
     const [senduserid,setSenduserid] = useState('')
     const [sendmsg, setSendMsg] =useState('')
     const [token,setToken] =useState('')
+    const [times, setTimes] = useState('')
+
 
     const route = useRoute()
 
@@ -35,7 +37,23 @@ export default function Chat(){
         }).then(r=>r.json()).then(json=>{
             setMsgs(json)
         })
+        setInterval(()=>{
+            setTimes(Math.random(1,1000)+1)
+        },10000)
     },[])
+
+    useEffect(async()=>{
+        if (times !== ''){
+            const user_id = await AsyncStorage.getItem('userid')
+            const token = await AsyncStorage.getItem('token')
+            const send_user_id = route?.params?.data[0].id
+            await fetch(`https://webcoffee.herokuapp.com/api/v1/msgs/${user_id}/${send_user_id}/`,{
+            headers: {'Authorization': `Bearer ${token}`}
+        }).then(r=>r.json()).then(json=>{
+            setMsgs(json)
+        })
+        }
+    },[times])
 
     async function sendMsg(){
         await fetch('https://webcoffee.herokuapp.com/api/v1/msgs/',{
@@ -47,6 +65,7 @@ export default function Chat(){
 			body: JSON.stringify({send_user_msg_id:userid, recv_user_msg_id: senduserid, msg: sendmsg})
 		}).then(r=>r.json()).then(json=>{
             setMsgs([...msgs,json])
+            setSendMsg('')
         })
     }
 

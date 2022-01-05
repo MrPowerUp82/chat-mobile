@@ -13,6 +13,19 @@ export default function Login(){
     const [token, setToken] = useState('')
     const [user,setUser] = useState('')
     const [userID,setUserID] = useState('')
+    const [ok,setOk] = useState(false)
+
+    useEffect(async()=>{
+        if (ok){
+            await Promise.all([
+                AsyncStorage.setItem('token', token),
+                AsyncStorage.setItem('username',user),
+                AsyncStorage.setItem('userid',userID.toString())
+                ])
+                NativeModules.DevSettings.reload()
+                await Updates.reloadAsync()
+        }
+    },[ok])
 
     useEffect(async()=>{
         if (token !== ''){
@@ -22,11 +35,8 @@ export default function Login(){
             console.log(json[0])
             setUser(json[0].username)
             setUserID(json[0].id)
+            setOk(true)
         })
-        await AsyncStorage.setItem('username',user)
-        await AsyncStorage.setItem('userid',userID.toString())
-        NativeModules.DevSettings.reload()
-        await Updates.reloadAsync()
         }
     },[token])
 
@@ -41,10 +51,6 @@ export default function Login(){
         }).then(r=>r.json()).then(json=>{
             setToken(json.access)
         })
-        await AsyncStorage.setItem('token', token)
-        await AsyncStorage.setItem('username',user)
-        await AsyncStorage.setItem('userid',userID.toString())
-        
     }
 
 
