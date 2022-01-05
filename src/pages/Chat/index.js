@@ -56,7 +56,11 @@ export default function Chat(){
     },[times])
 
     async function sendMsg(){
-        await fetch('https://webcoffee.herokuapp.com/api/v1/msgs/',{
+        console.log(sendMsg)
+        if(typeof(sendMsg) !== typeof('')){
+            alert('Você não digitou nada')
+        }else{
+            await fetch('https://webcoffee.herokuapp.com/api/v1/msgs/',{
 			method: 'POST',
 			headers:{
 				'Content-Type': 'application/json',
@@ -67,6 +71,7 @@ export default function Chat(){
             setMsgs([...msgs,json])
             setSendMsg('')
         })
+        }
     }
 
     return(

@@ -9,6 +9,7 @@ export default function RenderInvites({data}){
 
     const [token,setToken] = useState('')
     const [userid,setUserid] = useState('')
+    const [visible,setVisible] = useState(true)
 
     useEffect(async()=>{
 
@@ -27,8 +28,7 @@ export default function RenderInvites({data}){
                console.log(json)
         })
         }catch{
-            NativeModules.DevSettings.reload()
-            Updates.reloadAsync()
+            setVisible(false)
         }
     }
 
@@ -43,16 +43,22 @@ export default function RenderInvites({data}){
                
         })
        }catch{
-            NativeModules.DevSettings.reload()
-            Updates.reloadAsync()
+           setVisible(false)
+           await Updates.reloadAsync()
        }
     }
 
-    return(
-        <Container>
-            <Name>{data.send_username}</Name>
-            <Feather name="check" size={28} color="green" onPress={()=>acceptInvite(data.send_user_id, data.send_username,data.id)}/>
-            <Feather name="x" size={28} color="red" onPress={()=>deleteInvite(data.id)}/>
-        </Container>
-    )
+    if (visible){
+        return(
+            <Container>
+                <Name>{data.send_username}</Name>
+                <Feather name="check" size={28} color="green" onPress={()=>acceptInvite(data.send_user_id, data.send_username,data.id)}/>
+                <Feather name="x" size={28} color="red" onPress={()=>deleteInvite(data.id)}/>
+            </Container>
+        )
+    }else{
+        return(
+            <></>
+        )
+    }
 }
