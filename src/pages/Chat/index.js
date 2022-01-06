@@ -34,11 +34,19 @@ export default function Chat(){
         setSenduserid(send_user_id)
         const send_username = route?.params?.data[0].username
         setUsername(send_username)
-        await fetch(`https://webcoffee.herokuapp.com/api/v1/msgs/${user_id}/${send_user_id}/`,{
+        await Promise.all([
+            fetch(`https://webcoffee.herokuapp.com/api/v1/msgs/${user_id}/${send_user_id}/`,{
             headers: {'Authorization': `Bearer ${token}`}
         }).then(r=>r.json()).then(json=>{
             setMsgs(json)
+            
+        }),
+            fetch(`https://webcoffee.herokuapp.com/api/v1/check/`,{
+            headers: {'Authorization': `Bearer ${token}`}
+        }).then(r=>r.json()).then(json=>{
+            AsyncStorage.setItem('msgs', json.lenght.toString())
         })
+        ])
         setInterval(()=>{
             setTimes(Math.random(1,1000)+1)
         },10000)
@@ -49,11 +57,19 @@ export default function Chat(){
             const user_id = await AsyncStorage.getItem('userid')
             const token = await AsyncStorage.getItem('token')
             const send_user_id = route?.params?.data[0].id
-            await fetch(`https://webcoffee.herokuapp.com/api/v1/msgs/${user_id}/${send_user_id}/`,{
-            headers: {'Authorization': `Bearer ${token}`}
-        }).then(r=>r.json()).then(json=>{
-            setMsgs(json)
-        })
+            await Promise.all([
+                fetch(`https://webcoffee.herokuapp.com/api/v1/msgs/${user_id}/${send_user_id}/`,{
+                headers: {'Authorization': `Bearer ${token}`}
+            }).then(r=>r.json()).then(json=>{
+                setMsgs(json)
+                
+            }),
+                fetch(`https://webcoffee.herokuapp.com/api/v1/check/`,{
+                headers: {'Authorization': `Bearer ${token}`}
+            }).then(r=>r.json()).then(json=>{
+                AsyncStorage.setItem('msgs', json.lenght.toString())
+            })
+            ])
         }
     },[times])
 

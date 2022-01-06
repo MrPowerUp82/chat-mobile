@@ -7,7 +7,6 @@ import Register from '../pages/Register'
 import Send from '../pages/Send'
 import { checkLogin } from '../utils/check_login'
 import Logout from '../pages/Logout'
-import Test from '../pages/Test'
 
 const Drawer = createDrawerNavigator()
 
@@ -36,9 +35,6 @@ export default function Routes(){
             }} />
                 <Drawer.Screen name="Logout" component={Logout} options={{
                     drawerIcon: ({focused,size,color})=>(<Feather name="log-out" size={size} color={color} />)
-                }}/>
-                 <Drawer.Screen name="ToolDebug" component={Test} options={{
-                    drawerIcon: ({focused,size,color})=>(<Feather name="tool" size={size} color={color} />)
                 }}/>
                 </>
             ) : (

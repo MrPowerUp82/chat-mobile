@@ -1,53 +1,62 @@
-import React, {Component} from 'react';
-import {TextInput, View, Keyboard} from 'react-native';
-import {Constants, Notifications, Permissions} from 'expo';
+import React, { useEffect } from 'react';
+import { StyleSheet, Button, View } from 'react-native';
+import * as Notification from 'expo-notifications';
 
-export default class Test extends Component {
-    onSubmit(e) {
-        Keyboard.dismiss();
+Notification.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true
+    };
+  }
+});
 
-        const localNotification = {
-            title: 'done',
-            body: 'done!'
-        };
+export default function Test() {
 
-        const schedulingOptions = {
-            time: (new Date()).getTime() + Number(e.nativeEvent.text)
-        }
+  useEffect(() => {
+    //When app is closed
+    const backgroundSubscription = Notification.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+    //When the app is open
+    const foregroundSubscription = Notification.addNotificationReceivedListener(notification => {
+      console.log(notification);
+    });
 
-        // Notifications show only when app is not active.
-        // (ie. another app being used or device's screen is locked)
-        Notifications.scheduleLocalNotificationAsync(
-            localNotification, schedulingOptions
-        );
+    return () => {
+      backgroundSubscription.remove();
+      foregroundSubscription.remove();
     }
+  }, []);
+  //=======================================================
 
-    handleNotification() {
-        console.warn('ok! got your notif');
-    }
+  //Trigger Function Called by click of the button to
+  //trigger notification
 
-    async componentDidMount() {
-        // We need to ask for Notification permissions for ios devices
-        let result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+  //=======================================================
+  const triggerNotification = () => {
+    Notification.scheduleNotificationAsync({
+      content: {
+        title: "My First Notification",
+        body: "Local Notification to be sent"
+      },
+      trigger: {
+        seconds: 5
+      }
+    });
+  }
+  return (
+    <View style={styles.container}>
+      <Button title="Send Notification" onPress={triggerNotification} />
+    </View>
+  );
+}
 
-        if (Constants.isDevice && result.status === 'granted') {
-            console.log('Notification permissions granted.')
-        }
-
-        // If we want to do something with the notification when the app
-        // is active, we need to listen to notification events and 
-        // handle them in a callback
-        Notifications.addListener(this.handleNotification);
-    }
-
-    render() {
-        return (
-            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-                <TextInput
-                    onSubmitEditing={this.onSubmit}
-                    placeholder={'time in ms'}
-                />
-            </View>
-        );
-    }
-};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
