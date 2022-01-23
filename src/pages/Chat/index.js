@@ -60,6 +60,7 @@ export default function Chat(){
         }
         return () =>{
             isActive = false;
+            setTimes('')
             clear_interval()
             ac.abort()
         }
@@ -70,6 +71,8 @@ export default function Chat(){
     }
 
     useEffect(async()=>{
+        let isActive = true
+        const ac = new AbortController()
         if (times !== '' && isActive){
             const user_id = await AsyncStorage.getItem('userid')
             const token = await AsyncStorage.getItem('token')
@@ -87,6 +90,12 @@ export default function Chat(){
                 AsyncStorage.setItem('msgs', json.lenght.toString())
             })
             ])
+        }
+        return () =>{
+            isActive = false;
+            setTimes('')
+            clear_interval()
+            ac.abort()
         }
     },[times])
 

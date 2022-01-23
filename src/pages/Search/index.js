@@ -46,6 +46,9 @@ export default function Search(){
             body: JSON.stringify({send_user_id:userid, recv_user_id:selectedValue[0], status: 0, send_username: username})
         }).then(r=>r.json()).then(json=>{
                 console.log(json)
+                if(json?.error){
+                    alert(json.error)
+                }
         })
     }
 
