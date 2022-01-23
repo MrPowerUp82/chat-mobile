@@ -62,8 +62,8 @@ export default function Login(){
         <Container>
             <InputContainer>
                 <Title>Login</Title>
-                <Input placeholder="Username" value={username} onChangeText={(text)=>{setUsername(text)}}/>
-                <Input placeholder="Password" secureTextEntry={true} value={password} onChangeText={(text)=>{setPassword(text)}}/>
+                <Input placeholder="Username" value={username} onChangeText={(text)=>{setUsername(text)}} autoCapitalize="none" />
+                <Input placeholder="Password" secureTextEntry={true} value={password} onChangeText={(text)=>{setPassword(text)}} autoCapitalize="none"/>
                 <Button onPress={()=>handleLogin()}>
                     <ButtonTitle>LOGIN</ButtonTitle>
                 </Button>
