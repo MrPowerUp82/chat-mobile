@@ -37,7 +37,7 @@ TaskManager.defineTask(TASK_NAME, () => {
 const register = () =>{
     return BackgroundFetch.registerTaskAsync(TASK_NAME,{
         minimumInterval: 10,
-        stopOnTerminate: false,
+        stopOnTerminate: true,
         startOnBoot: true,
     })
 }

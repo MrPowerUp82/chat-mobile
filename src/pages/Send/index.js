@@ -19,8 +19,10 @@ export default function Send(){
     }
 
     useEffect(async()=>{
-
-        const token = await AsyncStorage.getItem('token')
+        let isActive = true
+        const ac = new AbortController()
+        if (isActive){
+            const token = await AsyncStorage.getItem('token')
         setToken(token)
         const user_id = await AsyncStorage.getItem('userid')
         setUserid(user_id)
@@ -28,8 +30,15 @@ export default function Send(){
         await fetch('https://webcoffee.herokuapp.com/api/v1/invites/'+user_id+'/',{
             headers: {'Authorization': `Bearer ${token}`}
         }).then(r=>r.json()).then(json=>{
-            setInvites(json)
+            if(isActive){
+                setInvites(json)
+            }
         })
+        }
+        return ()=>{
+            isActive=false
+            ac.abort()
+        }
     },[])
 
     return(

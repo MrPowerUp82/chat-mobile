@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Container, InputContainer,Title,Input, Button, ButtonTitle} from './styles';
-import { NativeModules } from 'react-native';
+import { NativeModules, Alert } from 'react-native';
 import * as Updates from 'expo-updates'
 
 
@@ -49,7 +49,11 @@ export default function Login(){
             },
             body: JSON.stringify({username:username, password: password})
         }).then(r=>r.json()).then(json=>{
-            setToken(json.access)
+            if (json?.detail){
+                Alert.alert("Login", json.detail)
+            }else{
+                setToken(json.access)
+            }
         })
     }
 

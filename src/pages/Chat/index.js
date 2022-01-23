@@ -25,7 +25,10 @@ export default function Chat(){
 
 
     useEffect(async()=>{
-        const user_id = await AsyncStorage.getItem('userid')
+        let isActive = true
+        const ac = new AbortController()
+        if(isActive){
+            const user_id = await AsyncStorage.getItem('userid')
         setUserid(user_id)
         const username = await AsyncStorage.getItem('username')
         const token = await AsyncStorage.getItem('token')
@@ -38,7 +41,9 @@ export default function Chat(){
             fetch(`https://webcoffee.herokuapp.com/api/v1/msgs/${user_id}/${send_user_id}/`,{
             headers: {'Authorization': `Bearer ${token}`}
         }).then(r=>r.json()).then(json=>{
-            setMsgs(json)
+            if(isActive){
+                setMsgs(json)
+            }
             
         }),
             fetch(`https://webcoffee.herokuapp.com/api/v1/check/`,{
@@ -47,13 +52,25 @@ export default function Chat(){
             AsyncStorage.setItem('msgs', json.lenght.toString())
         })
         ])
-        setInterval(()=>{
-            setTimes(Math.random(1,1000)+1)
-        },10000)
+        if(isActive){
+            setInterval(()=>{
+                setTimes(Math.random(1,1000)+1)
+            },10000)
+        }
+        }
+        return () =>{
+            isActive = false;
+            clear_interval()
+            ac.abort()
+        }
     },[])
 
+    function clear_interval(){
+        clearInterval(times)
+    }
+
     useEffect(async()=>{
-        if (times !== ''){
+        if (times !== '' && isActive){
             const user_id = await AsyncStorage.getItem('userid')
             const token = await AsyncStorage.getItem('token')
             const send_user_id = route?.params?.data[0].id

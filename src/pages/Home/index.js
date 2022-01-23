@@ -10,17 +10,28 @@ export default function Home(){
     const [friends,setFriends] = useState([])
 
     useEffect(async()=>{
-        const user_id = await AsyncStorage.getItem('userid')
+        let isActive = true
+        const ac = new AbortController()
+        if(isActive){
+            const user_id = await AsyncStorage.getItem('userid')
         const username = await AsyncStorage.getItem('username')
         const token = await AsyncStorage.getItem('token')
         try{
             await fetch('https://webcoffee.herokuapp.com/api/v1/friends/'+user_id+'/',{
             headers: {'Authorization': `Bearer ${token}`}
         }).then(r=>r.json()).then(json=>{
-            setFriends(json)
+            if(isActive){
+                setFriends(json)
+            }
         })
         }catch{
             setFriends('erro')
+        }
+        }
+
+        return ()=>{
+            isActive = false;
+            ac.abort()
         }
         
     },[])

@@ -13,7 +13,10 @@ export default function Search(){
     const [selectedValue, setSelectedValue] = useState('');
 
     useEffect(async()=>{
-        const token = await AsyncStorage.getItem('token')
+        let isActive = true
+        const ac = new AbortController()
+        if(isActive){
+            const token = await AsyncStorage.getItem('token')
         setToken(token)
         const user_id = await AsyncStorage.getItem('userid')
         setUserid(user_id)
@@ -24,8 +27,15 @@ export default function Search(){
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'}
         }).then(r=>r.json()).then(json=>{
+           if(isActive){
             setUsers(json)
+           }
         })
+        }
+        return () =>{
+            isActive= false
+            ac.abort()
+        }
     },[])
 
 

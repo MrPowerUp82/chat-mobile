@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react'
 import * as Notification from 'expo-notifications';
+import {USER_FACING_NOTIFICATIONS} from 'expo-permissions'
 
 
 //=======================================================
@@ -10,6 +11,16 @@ import * as Notification from 'expo-notifications';
 //=======================================================
 const triggerNotification = () => {
 
+const foregroundSubscription = Notification.addNotificationReceivedListener(notification => {
+    console.log(notification);
+    });
+//When app is closed
+const backgroundSubscription = Notification.addNotificationResponseReceivedListener(response => {
+    console.log(response);
+});
+//When the app is open
+
+
 Notification.setNotificationHandler({
 handleNotification: async () => {
 return {
@@ -17,15 +28,6 @@ return {
     shouldPlaySound: true
 };
 }
-});
-
-    //When app is closed
-const backgroundSubscription = Notification.addNotificationResponseReceivedListener(response => {
-    console.log(response);
-});
-//When the app is open
-const foregroundSubscription = Notification.addNotificationReceivedListener(notification => {
-    console.log(notification);
 });
 
 

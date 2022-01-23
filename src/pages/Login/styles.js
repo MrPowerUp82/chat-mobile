@@ -32,14 +32,14 @@ margin-bottom:5px;
 `
 
 export const Title = styled.Text`
-    top: -25%;
+    top: -15%;
     font-size:25px;
     font-weight:bold;
     color: #fff;
 `
 
 export const Button = styled.TouchableOpacity`
-top: 22%;
+top: 15%;
 padding: 10px;
 background-color: #fff;
 border-radius: 15px;
